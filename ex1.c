@@ -33,8 +33,6 @@ EXTRA CREDIT:
 
    cffa edfe 1700 0001 0300 0080 0200 0000
    1000 0000 6005 0000 8500 2000 0000 0000
-   1900 0000 4800 0000 5f5f 5041 4745 5a45
-   524f 0000 0000 0000 0000 0000 0000 0000
 
    The following problems were created:
 
@@ -51,6 +49,10 @@ EXTRA CREDIT:
    6005: command line hangs
    0000: malfirmed Mach-o file
    8500: no discernible impact
+   2000: no discernible impact
+   0000: no discernible impact
+   0000: no discernible impact
+
 
 2. Print out 5 more lines of text or something more complex than hello world.
 
