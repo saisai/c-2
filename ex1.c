@@ -31,7 +31,7 @@ EXTRA CREDIT:
 
    Working on this part of the file:
 
-   cffa edfe 1700 0001 0300 0080 0200 0000
+   cffa edfe 0700 0001 0300 0080 0200 0000
    1000 0000 6005 0000 8500 2000 0000 0000
 
    The following problems were created:
@@ -41,7 +41,7 @@ EXTRA CREDIT:
    0700: bad CPU type in executable
    0001: bad CPU type in executable
    0300: no discernible impact
-   0080: not discernible impact
+   0080: no discernible impact
    0200: bad executable or shared library
    0000: bad executable or shared library
    1000: malformed Mach-o file
