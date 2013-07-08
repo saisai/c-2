@@ -71,4 +71,8 @@ Function signature: fputs(const char *restrict s, FILE *restrict stream).
 This function writes the string s to the stream pointed to by stream. I have included
 an example in this program.
 
+Both of these functions return a positive integer on success and EOF on failure.
+
+They both print (null) if the string argument is NULL.
+
 */
