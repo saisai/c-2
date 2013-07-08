@@ -1,0 +1,5 @@
+FLAGS:
+
+-S compile but do not assemble (i.e. generate assembly code)
+
+-c compile and assemble, but do not link
