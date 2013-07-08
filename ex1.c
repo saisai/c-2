@@ -53,6 +53,16 @@ EXTRA CREDIT:
    0000: no discernible impact
    0000: no discernible impact
 
+   Running otool -h on the file gives the following output:
+
+   magic 0xfeedfacf
+   cputype 16777223
+   cpusubtype 3
+   caps 0x80
+   filetype 2
+   ncmds 16
+   sizeofcmds 1376
+   flags 0x00200085
 
 2. Print out 5 more lines of text or something more complex than hello world.
 
