@@ -1,0 +1,21 @@
+EXTRA CREDIT
+
+1. Create an all: ex1 target that will build ex1 with just the command make.
+
+Added a less than rudimentary makefile.
+
+2. Read man make to find out more information on how to run it.
+
+Done.
+
+3. Read man cc to find out more information on what the flags -Wall and -g do.
+
+Done.
+
+4. Research Makefiles online and see if you can improve this one even more.
+
+Done.
+
+5. Find a Makefile in another C project and try to understand what it's doing.
+
+Done.
