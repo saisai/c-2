@@ -1,0 +1,7 @@
+1. Function declarations:
+
+   clearerr, fclose, feof, ferror, fflush, fgetc, fgetpos, fgets,
+   fopen, fprintf, fputc, fputs, fread, freopen, fscanf, fseek,
+   fsetpos, ftell, fwrite, getc, getchar, gets, perror, printf, 
+   putc, putchar, puts, remove, rename, scanf, setvbuf, sprintf,
+   sscanf, tmpfile, tmpnam, ungetc, vprintf, vsprintf
