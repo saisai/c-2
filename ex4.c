@@ -22,7 +22,16 @@ Valgrind is fucked on Mountain Lion.
 
 2. Read up on Valgrind on the internet.
 
-Fascinating,
+Fascinating!
+
+Discovered the full valgrind tool suite, run via valgrind --tool=
+
+memcheck - memory allocation checker
+cachegrind - cache profiler
+callgrind - extension to cachegrid plus data on callgraphs
+massif - heap profiler
+helgrind - thread debugger
+DRD - detects errors in multithreaded programs
 
 3. Download other software and build it by hand. 
 Try something you already use but never built for yourself.
