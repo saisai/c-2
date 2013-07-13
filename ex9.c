@@ -36,6 +36,10 @@ int main(int argc, char **argv) {
   printf("First string: %s.\n", strings[0]);
   printf("Last string: %s.\n", strings[3]);
 
+  int name_as_int;
+  name_as_int = (name[0] << 24) + (name[1] << 16) + (name[2] << 8) + name[3];   
+  printf("Name as int: %d.\n", name_as_int);
+
   int i;
 
   for (i = 0; i < 3; i++) {
@@ -71,6 +75,8 @@ Printed the modified numbers array values in  integer, hexadecimal and octal for
 4. If an array of characters is 4 bytes long, and an integer is 4 bytes long, then can 
 you treat the whole name array like it's just an integer? How might you accomplish this 
 crazy hack?
+
+Had a go using bit-shifting, included above.
 
 5. Take out a piece of paper and draw out each of these arrays as a row of boxes. Then 
 do the operations you just did on paper to see if you get them right.
