@@ -9,6 +9,10 @@ void pp(char *arg) {
 		char ch = arg[i];
 		if (isalpha(ch) || isblank(ch)) {
 			printf("'%c' == %d ", ch, ch);
+		} else if (isdigit(ch)) {
+			printf("digit: %c ", ch);
+		} else if (ispunct(ch)) {
+			printf("punc: %c ", ch);
 		}
 	}
 	printf("\n");
@@ -52,7 +56,7 @@ Included above.
 4. Use man to lookup information on isalpha and isblank. Use the other 
 similar functions to print out only digits or other characters.
 
-Yep.
+Included some variations above.
 
 5. Go read about how different people like to format their functions. Never 
 use the "K&R syntax" as it's antiquated and confusing, but understand what 
