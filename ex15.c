@@ -25,9 +25,33 @@ int main(int argc, char *argv[]) {
 
   // Prove it.
   printf("Start of names array: %p Pointer address: %p.\n", &names[0], current_name);
-  printf("Start of ages array: %p Pointer address: %p.\n", &ages[0], current_age);
+  printf("Start of names array: %s.\n", *current_name);
 
+  printf("Start of ages array: %p Pointer address: %p.\n", &ages[0], current_age);
+  printf("Start of ages array: %d.\n", *current_age);
+
+
+  pb();
+
+  // Now use the pointers to access the array elements.
+  // To access the VALUE of whatever a pointer is pointing at, use *.
+  for (i = 0; i < count; i++) {
+    printf("%s is %d years old.\n", *(current_name + i), *(current_age + i));
+  }
+
+  pb();
+
+  // We can also navigate the pointers like arrays.
+  for (i = 0; i < count; i++) {
+    printf("%s is %d years old.\n", current_name[i], current_age[i]);
+  }
+
+  pb();
+
+  // This way leads to madness.
+  for (current_name = names, current_age = ages; (current_age - ages) < count; current_name++, current_age++) {
+    printf("%s is %d years old.\n", *current_name, *current_age);
+  }
 
   return 0;
-
 }
