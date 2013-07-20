@@ -23,6 +23,15 @@ typedef struct {
   db *db;
 } connection;
 
+void die(const char *message) {
+	if (errno) {
+		perror(message);
+	} else {
+		printf("ERROR: %s\n", message);
+	}
+	exit(1);
+}
+
 address *address_create(int id, char *name, char *email) {
 	address *addr = malloc(sizeof(address));
 
@@ -35,11 +44,29 @@ address *address_create(int id, char *name, char *email) {
 }
 
 void address_print(address *addr) {
-	printf("Address: %d %s (%s)\n", addr->id, addr->name, addr->email);
+	printf("%d %s (%s)\n", addr->id, addr->name, addr->email);
 }
 
 void address_destroy(address *addr) {
 	free(addr);
+}
+
+void db_load(connection *conn) {
+	int rc = fread(conn->db, sizeof(db), 1, conn->file);
+	if (rc != 1) {
+		die("Failed to load database.");
+	}
+}
+
+connection *db_open(const char *filename, char mode) {
+	connection *conn = malloc(sizeof(connection));
+	if (!conn) {
+		die("Memory error.");
+	}
+	conn->db = malloc(sizeof(db));
+	if (!conn->db) {
+		die("Memory error");
+	}
 }
 
 int main(int argc, char *argv[]) {
