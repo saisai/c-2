@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
+#include <time.h>
 
 #define MAX_DATA 512
 #define MAX_ROWS 100
@@ -67,12 +68,52 @@ connection *db_open(const char *filename, char mode) {
 	if (!conn->db) {
 		die("Memory error");
 	}
+	if (mode == 'c') {
+		conn->file = fopen(filename, "w");
+	} else {
+		conn->file = fopen(filename, "r+");
+		if (conn->file) {
+			db_load(conn);
+		}
+	}
+	if (!conn->file) {
+		die("Failed to open file.");
+	}
+	return conn;
 }
 
+void db_close(connection *conn) {
+	if (conn) {
+		if (conn->file) fclose(conn->file);
+		if (conn->db) free(conn->db);
+		free(conn);
+	}
+}
+
+void db_write(connection *conn) {
+	rewind(conn->file);
+}
 int main(int argc, char *argv[]) {
+
+	int i;
+
+  // Exercise address creation, display and deletion.
 	address *addr = address_create(100, "buddhamagnet", "buddhamagnet@gmail.com");
 	address_print(addr);
 	address_destroy(addr);
+
+  // Demonstrate address for connection.
+	connection *conn = db_open("db.dat", 'c');
+	printf("Just created a connection at address %p.\n", conn);
+	printf("The connection's database is stored at address: %p.\n", conn->db);
+	printf("The connection's database contains %ld rows (addresses).\n", sizeof(conn->db->rows) / sizeof(address));
+
+  // Demonstrate addresses of database rows.
+	for (i = 0; i < MAX_ROWS; i++) {
+		printf("Address of record at row %d: %p.\n", i + 1, &conn->db->rows[i]);
+		sleep(1);
+	}
+
 	return 0;
 }
 
