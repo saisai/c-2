@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
-#include <time.h>
+#include <unistd.h>
 
 #define MAX_DATA 512
 #define MAX_ROWS 100
@@ -92,7 +92,66 @@ void db_close(connection *conn) {
 
 void db_write(connection *conn) {
 	rewind(conn->file);
+	int rc = fwrite(conn->db, sizeof(db), 1, conn->file);
+	if (rc != 1) {
+		die("Failed to write database.");
+	}
+	rc = fflush(conn->file);
+	if (rc ==  1) {
+		die("Cannot flush database.");
+	}
 }
+
+void db_create(connection *conn) {
+  int i = 0;
+  for (i = 0; i < MAX_ROWS; i++) {
+  	address addr = {.id = 1, .set = 0};
+  	conn->db->rows[i] = addr;
+  }
+}
+
+void db_set(connection *conn, int id, const char *name, const char *email) {
+	address *addr = &conn->db->rows[id];
+	if (addr->set) {
+		die("Already set, delete it first.");
+	}
+  addr->set = 1;
+  char *res = strncpy(addr->name, name, MAX_DATA);
+  if (!res) {
+  	die("Failed to copy name.");
+  }
+  res = strncpy(addr->email, email, MAX_DATA);
+  if (!res) {
+  	die("Failed to copy email.");
+  }
+}
+
+void db_get(connection *conn, int id) {
+  address *addr = &conn->db->rows[id];
+
+  if (addr->set) {
+  	address_print(addr);
+  } else {
+  	die("ID is not set.");
+  }
+}
+
+void db_delete(connection *conn, int id) {
+	address addr = {.id = id, .set = 0};
+	conn->db->rows[id] = addr;
+}
+
+void db_list(connection *conn) {
+	int i = 0;
+	db *db = conn->db;
+	for (i = 0; i < MAX_ROWS; i++) {
+		address *current = &db->rows[i];
+		if (current->set) {
+			address_print(current);
+		}
+	}
+}
+
 int main(int argc, char *argv[]) {
 
 	int i;
@@ -111,7 +170,7 @@ int main(int argc, char *argv[]) {
   // Demonstrate addresses of database rows.
 	for (i = 0; i < MAX_ROWS; i++) {
 		printf("Address of record at row %d: %p.\n", i + 1, &conn->db->rows[i]);
-		sleep(1);
+		usleep(10000);
 	}
 
 	return 0;
