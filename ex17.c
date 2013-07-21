@@ -16,7 +16,8 @@ typedef struct {
 } address;
 
 typedef struct {
-  address rows[MAX_ROWS];
+	int max_rows;
+  address rows[];
 } db;
 
 typedef struct {
@@ -108,9 +109,10 @@ void db_write(c) {
 	}
 }
 
-void db_create() {
+void db_create(int max_rows) {
   int i = 0;
-  for (i = 0; i < MAX_ROWS; i++) {
+  conn->db->max_rows = max_rows;
+  for (i = 0; i < conn->db->max_rows; i++) {
   	address addr = {.id = i, .set = 0};
   	conn->db->rows[i] = addr;
   }
@@ -158,6 +160,15 @@ void db_list() {
 	}
 }
 
+void db_iterate() {
+	int i;
+	// Demonstrate addresses of database rows.
+	for (i = 0; i < conn->db->max_rows; i++) {
+	  printf("Address of record at row %d: %p.\n", i + 1, &conn->db->rows[i]);
+		usleep(10000);
+	}
+}
+
 int main(int argc, char *argv[]) {
 
 	if (argc < 3) die("USAGE: ex17 <dbfile> <action> [params]");
@@ -175,11 +186,6 @@ int main(int argc, char *argv[]) {
 	  printf("The connection's database is stored at address: %p.\n", c->db);
 	  printf("The connection's database contains %ld rows (addresses).\n", sizeof(c->db->rows) / sizeof(address));
 
-	  // Demonstrate addresses of database rows.
-	  for (i = 0; i < MAX_ROWS; i++) {
-	    printf("Address of record at row %d: %p.\n", i + 1, &c->db->rows[i]);
-		  usleep(10000);
-	  }
 	  */
 
 	char *filename = argv[1];
@@ -187,17 +193,21 @@ int main(int argc, char *argv[]) {
 	int id = 0;
 	db_open(filename, action);
 
-	if (argc > 3) id = atoi(argv[3]);
+	if (argv[2][0] != 'c' && argc > 3) id = atoi(argv[3]);
 	if (id >= MAX_ROWS) die("There's not that many records.");
 
 	switch (action) {
 		case 'c':
-		  db_create();
+		if (argc != 4) die("Please supply a max rows value for the database.");
+		  db_create(atoi(argv[3]));
 		  db_write();
 		  break;
 		case 'g':
 		  if (argc != 4) die("Please supply an ID.");
 		  db_get(id);
+		  break;
+		case 'i':
+		  db_iterate();
 		  break;
 		case 's':
 		  if (argc != 6) die("Please supply an ID, name and email");
