@@ -240,7 +240,7 @@ a single connection shared between the functions makes sense so created it as
 a static variable.
 
 2. Change the code to accept parameters for MAX_DATA and MAX_ROWS, store them
-in the Database struct, and write that to the file, thus creating a database
+in the db struct, and write that to the file, thus creating a database
 that can be arbitrarily sized.
 
 3. Add more operations you can do on the database, like find.
@@ -248,7 +248,7 @@ that can be arbitrarily sized.
 4. Read about how C does it's struct packing, and then try to see why your file
 is the size it is. See if you can calculate a new size after adding more fields.
 
-5. Add some more fields to the Address and make them searchable.
+5. Add some more fields to the address and make them searchable.
 
 6. Write a shell script that will do your testing automatically for you by
 running commands in the right order. Hint: Use set -e at the top of a bash
@@ -256,5 +256,8 @@ to make it abort the whole script if any command has an error.
 
 7. Try reworking the program to use a single global for the database connection.
 How does this new version of the program compare to the other one?
+
+Already did that in step 1. I use global variables (very) sparingly, but in the case
+of a shared connection it made sense.
 
 */
