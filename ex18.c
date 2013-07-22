@@ -12,6 +12,7 @@ void die(const char *message) {
   exit(1);
 }
 
+// Set up a function pointer and typedef it.
 typedef int (*compare_cb)(int a, int b);
 
 int *bubble_sort(int *numbers, int count, compare_cb cmp) {
@@ -34,6 +35,33 @@ int *bubble_sort(int *numbers, int count, compare_cb cmp) {
 		}
 	}
   return target;
+}
+
+int sorted_order(int a, int b) {
+  return a - b;
+}
+
+int reverse_order(int a, int b) {
+  return b - a;
+}
+
+int strange_order(int a, int b) {
+  if (a == 0 || b == 0) {
+    return 0;
+  } else {
+    return a % b;
+  }
+}
+
+void test_sort(int *numbers, int count, compare_cb cmp) {
+  int i = 0;
+  int *sorted = bubble_sort(numbers, count, cmp);
+  if (!sorted) die("Sorting fail.");
+  for (i = 0; i < count; i++) {
+    printf("%d ", sorted[i]);
+  }
+  printf("\n");
+  free(sorted);
 }
 
 int main(int argc, char *argv[]) {
