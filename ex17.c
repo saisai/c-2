@@ -11,6 +11,7 @@
 typedef struct {
   int id;
   int set;
+  char code;
   char name[MAX_DATA];
   char email[MAX_DATA];
   char postcode[MAX_DATA];
@@ -41,12 +42,13 @@ void die(const char *message) {
 	exit(1);
 }
 
-address *address_create(int id, char *name, char *email, char *postcode) {
+address *address_create(int id, char code, char *name, char *email, char *postcode) {
 
 	address *addr = malloc(sizeof(address));
 
 	addr->id = id;
 	addr->set = 0;
+	addr->code = code;
 	memcpy(addr->name, name, strlen(name));
 	memcpy(addr->email, email, strlen(email));
 	memcpy(addr->postcode, postcode, strlen(postcode));
@@ -55,7 +57,7 @@ address *address_create(int id, char *name, char *email, char *postcode) {
 }
 
 void address_print(address *addr) {
-	printf("%d %s (%s) resident at %s\n", addr->id, addr->name, addr->email, addr->postcode);
+	printf("%d %c %s (%s) resident at %s\n", addr->id, addr->code, addr->name, addr->email, addr->postcode);
 }
 
 void address_destroy(address *addr) {
@@ -127,6 +129,7 @@ void db_set(int id, const char *name, const char *email, const char *postcode) {
 	}
 
   addr->set = 1;
+  addr->code = 'c';
 
   char *res = strncpy(addr->name, name, MAX_DATA);
   if (!res) {
@@ -274,11 +277,22 @@ Rudimentary find function added.
 4. Read about how C does it's struct packing, and then try to see why your file
 is the size it is. See if you can calculate a new size after adding more fields.
 
+The size of the file is 154400 which is 512 + 512 + 512 + 4 + 4. There was no padding
+added. There is an example of how C performs struct padding in the extras folder. I predicted
+that when I added a single char field to the address struct the size of the struct would
+expand to 512 + 512 + 512 + 4 + 4 + 4 (padding for char), making 1548 (x 100 = 154800).
+
+I was right.
+
 5. Add some more fields to the address and make them searchable.
+
+Added a postcode field and made name, email and postcode fields searchable.
 
 6. Write a shell script that will do your testing automatically for you by
 running commands in the right order. Hint: Use set -e at the top of a bash
 to make it abort the whole script if any command has an error.
+
+Done elsewhere.
 
 7. Try reworking the program to use a single global for the database connection.
 How does this new version of the program compare to the other one?
