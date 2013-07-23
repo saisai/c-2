@@ -135,5 +135,7 @@ Segmentation fault, as expected.
 5. Write another sorting algorithm, then change test_sorting so that it takes both an arbitrary
 sort function and the sort function's callback comparison. Use it to test both of your algorithms.
 
+WTF?
+
 */
 
