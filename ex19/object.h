@@ -5,7 +5,7 @@ typedef enum {
   NORTH, SOUTH, EAST, WEST
 } direction;
 
-typdef struct {
+typedef struct {
 	char *description;
 	int (*init)(void *self);
 	void (*describe)(void *self);

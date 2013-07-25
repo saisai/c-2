@@ -14,7 +14,7 @@ void ob_destroy(void *self) {
 
 void ob_describe(void *self) {
 	object *obj = self;
-	printf("%s.\n", obj->decsription);
+	printf("%s.\n", obj->description);
 }
 
 int ob_init(void *self) {
@@ -33,7 +33,7 @@ int ob_attack(void *self, int damage) {
 
 void *ob_new(size_t size, object proto, char *description) {
 	if (!proto.init) proto.init = ob_init;
-	if (!proto.desctibe) proto.describe = ob_describe;
+	if (!proto.describe) proto.describe = ob_describe;
 	if (!proto.move) proto.move = ob_move;
 	if (!proto.attack) proto.attack = ob_attack;
 
