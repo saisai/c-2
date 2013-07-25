@@ -53,6 +53,37 @@ void *room_move(void *self, direction dir) {
 	return next;
 }
 
+int room_attack(void *self, int damage) {
+	room *room = self;
+	monster *monster = room->bogeyman;
+
+	if (monster) {
+		monster->_(attack)(monster, damage);
+		return 1;
+	} else {
+		printf("You flail!\n");
+		return 0;
+	}
+}
+
+object roomProto = { .move = room_move, .attack = room_attack };
+
+void *map_move(void *self, direction dir) {
+	map *map = self;
+	room *location = map->location;
+	room *next = NULL;
+	next = location->_(move)(location, direction);
+	if (next) {
+		map->location = next;
+	}
+	return next;
+}
+
+int map_attack(void *self, int damage) {
+	map *map = self;
+	room *location = map->location;
+  return location->_(attack)(location, damage);
+}
 
 int main(int argc, char *argv[]) {
   printf("loaded.\n");
