@@ -21,7 +21,7 @@ void *ob_move(void *self, direction dir);
 int ob_attack(void *self, int damage);
 void *ob_new(size_t size, object proto, char *description);
 
-#define NEW(T, N) ob_new(sizeof(T), T##proto, N)
+#define NEW(T, N) ob_new(sizeof(T), T##Proto, N)
 #define _(N) proto.N
 
 #endif

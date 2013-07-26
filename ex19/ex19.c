@@ -132,7 +132,7 @@ int process_input(map *game) {
 		  game->_(move)(game, WEST);
 		  break;
 		case 'a':
-		  game->(attack)(game, damage);
+		  game->_(attack)(game, damage);
 		  break;
 		case 'l':
 		  printf("You can go: \n");
