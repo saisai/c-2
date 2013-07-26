@@ -85,7 +85,80 @@ int map_attack(void *self, int damage) {
   return location->_(attack)(location, damage);
 }
 
+int map_init(void *self) {
+	map *map = self;
+	room *hall = NEW(room, "The great hall.");
+	room *throne = NEW(room, "The throne room.");
+	room *arena = NEW(room, "The arena, with the minotaur.");
+	room *kitchen = NEW(room, "The kitchen - you now have a blade.");
+
+	hall->north = throne;
+	throne->west = arena;
+	throne->east = kitchen;
+	throne->south = hall;
+
+	arena->east = throne;
+	kitchen->west = throne;
+
+	map->start = hall;
+	map->location = hall;
+
+	return 1;
+}
+
+object mapProto = { .init = map_init, .move = map_move, .attack = map_attack };
+
+int process_input(map *game) {
+	printf("\n> ");
+	char ch = getchar();
+	getchar(); // EAT ENTER.
+	int damage = rand() % 4;
+
+	switch(ch) {
+		case -1:
+		  printf("Loser!\n");
+		  return 0;
+		  break;
+		case 'n':
+		  game->_(move)(game, NORTH);
+		  break;
+		case 's':
+		  game->_(move)(game, SOUTH);
+		  break;
+		case 'e':
+		  game->_(move)(game, EAST);
+		  break;
+		case 'w':
+		  game->_(move)(game, WEST);
+		  break;
+		case 'a':
+		  game->(attack)(game, damage);
+		  break;
+		case 'l':
+		  printf("You can go: \n");
+		  if (game->location->north) printf("NORTH\n");
+		  if (game->location->south) printf("SOUTH\n");
+		  if (game->location->east) printf("EAST\n");
+		  if (game->location->west) printf("WEST\n");
+      break;
+    default:
+      printf("What does %d mean?\n", ch);
+      break;
+	}
+	return 1;
+}
+
 int main(int argc, char *argv[]) {
-  printf("loaded.\n");
+
+  srand(time(NULL));
+  map *game = NEW(map, "The Hall Of The Minotaur");
+
+  printf("You enter the ");
+  game->location->_(describe)(game->location);
+
+  while(process_input(game)) {
+
+  }
+
   return 0;
 }
