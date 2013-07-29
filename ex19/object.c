@@ -5,7 +5,7 @@
 #include "object.h"
 
 void ob_destroy(void *self) {
-	object *obj = self;
+	Object *obj = self;
 	if (obj) {
 		if (obj->description) free(obj->description);
 		free(obj);
@@ -13,7 +13,7 @@ void ob_destroy(void *self) {
 }
 
 void ob_describe(void *self) {
-	object *obj = self;
+	Object *obj = self;
 	printf("%s.\n", obj->description);
 }
 
@@ -21,7 +21,7 @@ int ob_init(void *self) {
 	return 1;
 }
 
-void *ob_move(void *self, direction dir) {
+void *ob_move(void *self, Direction dir) {
 	printf("You can't move.\n");
 	return NULL;
 }
@@ -31,7 +31,7 @@ int ob_attack(void *self, int damage) {
 	return 0;
 }
 
-void *ob_new(size_t size, object proto, char *description) {
+void *ob_new(size_t size, Object proto, char *description) {
 	if (!proto.init) proto.init = ob_init;
 	if (!proto.describe) proto.describe = ob_describe;
 	if (!proto.move) proto.move = ob_move;
@@ -39,7 +39,7 @@ void *ob_new(size_t size, object proto, char *description) {
 
   // This seems weird, but we can make a struct of one size,
   // then point a different pointer at it to "cast" it.
-	object *el = calloc(1, size);
+	Object *el = calloc(1, size);
 	*el = proto;
 
 	// Copy the description over.

@@ -6,7 +6,7 @@
 #include "ex19.h"
 
 int monster_attack(void *self, int damage) {
-  monster *monster = self;
+  Monster *monster = self;
   printf("You attack %s!\n", monster->_(description));
   monster->hit_points -= damage;
   if (monster->hit_points > 0) {
@@ -19,16 +19,16 @@ int monster_attack(void *self, int damage) {
 }
 
 int monster_init(void *self) {
-	monster *monster = self;
+	Monster *monster = self;
 	monster->hit_points = 10;
 	return 1;
 }
 
-object monsterProto = { .init = monster_init, .attack = monster_attack };
+Object MonsterProto = { .init = monster_init, .attack = monster_attack };
 
-void *room_move(void *self, direction dir) {
-	room *room = self;
-	room *next = NULL;
+void *room_move(void *self, Direction dir) {
+	Room *room = self;
+	Room *next = NULL;
 
 	if (dir == NORTH && room->north) {
 		printf("Northwards into: \n");
@@ -54,8 +54,8 @@ void *room_move(void *self, direction dir) {
 }
 
 int room_attack(void *self, int damage) {
-	room *room = self;
-	monster *monster = room->bogeyman;
+	Room *room = self;
+	Monster *monster = room->bogeyman;
 
 	if (monster) {
 		monster->_(attack)(monster, damage);
@@ -66,13 +66,13 @@ int room_attack(void *self, int damage) {
 	}
 }
 
-object roomProto = { .move = room_move, .attack = room_attack };
+Object RoomProto = { .move = room_move, .attack = room_attack };
 
-void *map_move(void *self, direction dir) {
-	map *map = self;
-	room *location = map->location;
-	room *next = NULL;
-	next = location->_(move)(location, direction);
+void *map_move(void *self, Direction dir) {
+	Map *map = self;
+	Room *location = map->location;
+	Room *next = NULL;
+	next = location->_(move)(location, dir);
 	if (next) {
 		map->location = next;
 	}
@@ -80,17 +80,17 @@ void *map_move(void *self, direction dir) {
 }
 
 int map_attack(void *self, int damage) {
-	map *map = self;
-	room *location = map->location;
+	Map *map = self;
+	Room *location = map->location;
   return location->_(attack)(location, damage);
 }
 
 int map_init(void *self) {
-	map *map = self;
-	room *hall = NEW(room, "The great hall.");
-	room *throne = NEW(room, "The throne room.");
-	room *arena = NEW(room, "The arena, with the minotaur.");
-	room *kitchen = NEW(room, "The kitchen - you now have a blade.");
+	Map *map = self;
+	Room *hall = NEW(Room, "The great hall.");
+	Room *throne = NEW(Room, "The throne room.");
+	Room *arena = NEW(Room, "The arena, with the minotaur.");
+	Room *kitchen = NEW(Room, "The kitchen - you now have a blade.");
 
 	hall->north = throne;
 	throne->west = arena;
@@ -106,9 +106,9 @@ int map_init(void *self) {
 	return 1;
 }
 
-object mapProto = { .init = map_init, .move = map_move, .attack = map_attack };
+Object MapProto = { .init = map_init, .move = map_move, .attack = map_attack };
 
-int process_input(map *game) {
+int process_input(Map *game) {
 	printf("\n> ");
 	char ch = getchar();
 	getchar(); // EAT ENTER.
@@ -141,8 +141,11 @@ int process_input(map *game) {
 		  if (game->location->east) printf("EAST\n");
 		  if (game->location->west) printf("WEST\n");
       break;
-    default:
-      printf("What does %d mean?\n", ch);
+     case 'q':
+       printf("Bye!\n");
+       exit(1);
+      default:
+      printf("What does %c mean?\n", ch);
       break;
 	}
 	return 1;
@@ -151,7 +154,7 @@ int process_input(map *game) {
 int main(int argc, char *argv[]) {
 
   srand(time(NULL));
-  map *game = NEW(map, "The Hall Of The Minotaur");
+  Map *game = NEW(Map, "The Hall Of The Minotaur");
 
   printf("You enter the ");
   game->location->_(describe)(game->location);
