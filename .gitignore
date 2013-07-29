@@ -5,4 +5,4 @@ ex*
 !ex*/
 *.out.*
 *.dat
-.dSYM/
+*.dSYM/
